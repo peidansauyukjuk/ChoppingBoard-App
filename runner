@@ -1,0 +1,44 @@
+
+def run
+  while true
+    #call on our introduction method
+    #if user click add recipe 
+      #user enters variables for title and ingredients
+      #sql code using variables
+    #if user click add ingredient
+      #user enters variables for name and price
+      #sql code using variables
+    #if user click find recipe
+      #user enters variables for title
+        #sql code using title
+    #if user click find ingredient
+      #user enters variables for ingredient name
+      #sql code using variables
+    #if user click update recipe
+      #user enters variable for title
+      #sql find using title
+      #list attributes to edit
+      #user selects attributes in loop (until done)
+      #sql code edits attributes
+    #if user click update ingredient
+      #user enters variable for name
+      #sql find using name
+      #list attributes to edit
+      #user selects attributes in loop (until done)
+      #sql code edits attributes
+    #if user click delete recipe
+      #user enters variable for name
+      #sql find using name
+      #user selects are you sure
+      #sql code using name deletes
+    #if user click delete ingredient
+      #user enters variable for name
+      #sql find using name
+      #user selects are you sure
+      #sql code using name deletes
+    #if user selects done
+      #break method
+
+end
+
+do

@@ -1,0 +1,44 @@
+ADD RECIPE
+ADD INGREDIENT
+FIND RECIPE
+FIND INGREDIENT
+UPDATE RECIPE
+UPDATE INGREDIENT
+DELETE RECIPE
+DELETE INGREDIENT
+
+Add Recipe:
+ENTER RECIPE TITLE:
+ENTER INGREDIENT:
+
+Add Ingredient:
+ENTER INGREDIENT NAME:
+ENTER PRICE:
+
+Find Recipe:
+User has to enter all or part of recipe title correctly
+ENTER RECIPE TITLE:
+
+Find Ingredient:
+User has to enter ingredient name correctly
+ENTER INGREDIENT:
+
+Update Recipe:
+Find Recipe:
+List a menu of attributes to edit
+After they finish editing that attribute, show menu again.
+They can continue to edit until they select done.
+
+Update Ingredient:
+Find Ingredient:
+They can continue to edit name/price until they hit done.
+
+Delete Recipe:
+Find recipe
+Are you sure? (Y/N)
+
+Delete Ingredient:
+Find ingredient
+Are you sure? (Y/N)
+
+Branch:
