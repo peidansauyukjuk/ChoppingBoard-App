@@ -17,16 +17,25 @@ end
 
 def add_recipe
   #Prompt user to enter recipe title
-    #Check if recipe already exists, if so return "Recipe already in DB"
-  #Else do following
-  #Prompt user to enter recipe cuisine
-  #Prompt user to enter recipe rating
-  #Prompt user to enter recipe difficulty
-  #Prompt user to enter recipe instructions
-  #Prompt user to enter ingredient list separated by commas
-  #We turn string list into an array and add indiviually to db
-  #If ingredient is not in Ingredient.all then we will create it
-  #Recipe.create(title: title, the rest)
+  recipe_name = gets.chomp("What is the title of your recipe?")
+  if Recipe.find_by(name:recipe_title)
+    return "Recipe already in the cookbook!"
+  else
+    cuisine = gets.chomp("What type of cuisine is this recipe?")
+    rating = gets.chomp("Rate this recipe from 1-5.")
+    difficulty = gets.chomp("Enter easy, medium, or hard.")
+    descriptions = gets.chomp("Enter a simple description of the recipe.")
+    ingredients = gets.chomp("Enter all the ingredients, separated by comma")
+    ingredients = ingredients.split(",")
+    ingredients.each do |ingredient|
+      Ingredient.find_or_create_by(name:ingredient)
+    end
+    recipe = Recipe.create(name:recipe_name, cuisine:cuisine, rating:rating, difficulty:difficult, descriptions:descriptions)
+    ingredients.each do |ingredient|
+      Meal.create(recipe_id: recipe.id, ingredient_id: Ingredient.find_by(name:ingredient).id)
+    end
+    return "#{recipe_name} added to the cookbook!"
+  end
 end
 
 def find_recipe
@@ -34,6 +43,21 @@ def find_recipe
   #Display top 5 recipe titles if no exact matches are found.
   #Let user choose from those 5 and puts attributes
   #Return recipe instance
+  recipe_name = gets.chomp("Enter recipe title:")
+  recipes = Recipe.where("name LIKE ?", "%#{recipe_name}%").limit(5)
+  i = 1
+  recipes.each do |recipe|
+    puts "i. #{recipe.name}"
+    i += 1
+  end
+  num = gets.chomp("Enter the number corresponding to the recipe:")
+  recipe = recipes[num - 1]
+  puts "Name: #{recipe.name}"
+  puts "Cuisine: #{recipe.cusine}"
+  puts "Rating: #{recipe.rating}"
+  puts "Difficulty: #{recipe.difficulty}"
+  puts "Description: #{recipe.descriptions}"
+  recipe
 end
 
 # def find_ingredient
@@ -48,6 +72,8 @@ def update_recipe
   # Give a list of attributes to update
   # If-else statements for attribute chosen.
   # puts "Recipe updated!"
+  recipe = find_recipe
+  
 end
 
 def add_price #For ingredient
