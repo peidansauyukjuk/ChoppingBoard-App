@@ -1,11 +1,12 @@
+require 'pry'
 def introduction
   puts "Welcome to the Cookbook!"
-  puts "This app will allow you to enter recipes, edit and find them for later use."
-  puts "We hope you enjoy!"
   puts ""
+  puts "This app will allow you to enter recipes, edit and find them for later use."
+  puts "We hope you enjoy our app!"
   puts ""
 end
-# 
+#
 # def display_choices
 #   puts "Select one of the following:"
 #   puts "1. Add Recipe"
@@ -147,16 +148,39 @@ def delete_recipe
   end
 end
 
+def filter_by
+  prompt = TTY::Prompt.new
+  filter_choice = prompt.select("Would you like to filter by rating or difficulty?", %w(Rating Difficulty))
+  if filter_choice == "Rating"
+    rating_num = prompt.select("What food rating?", %w(1 2 3 4 5)).to_i
+    ary = Recipe.where("rating = ?", rating_num).limit(10).map {|recipe| recipe.name }
+    ary.map do |food|
+      puts food.capitalize
+      puts "---"
+    end
+  else
+    difficult = prompt.select("What level of difficulty?", %w(Easy Medium Hard)).downcase
+    ary = Recipe.where(difficulty: difficult).limit(10).map {|recipe| recipe.name }
+    ary.map do |food|
+      puts food.capitalize
+      puts "---"
+    end
+  end
+end
+
+# binding.pry
+
 def runner
   introduction
   while true
-    sleep(2)
+    sleep(1)
     puts ""
     prompt = TTY::Prompt.new
     choices = [
       "Add Recipe",
       "Find Recipe",
       "Update Recipe",
+      "Filter Recipes by Rating or Difficulty",
       "Update Ingredient Price",
       "Delete Recipe",
       "Exit App"
@@ -169,6 +193,8 @@ def runner
       find_recipe
     when "Update Recipe"
       puts update_recipe
+    when "Filter Recipes by Rating or Difficulty"
+      filter_by
     when "Update Ingredient Price"
       puts add_price_to_ingredient
     when "Delete Recipe"
