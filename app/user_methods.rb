@@ -75,6 +75,12 @@ def find_recipe
     puts "Rating: #{recipe.rating}"
     puts "Difficulty: #{recipe.difficulty.capitalize}"
     puts "Description: #{recipe.description.capitalize}"
+    ingredient = []
+    recipe.ingredients.each do |ingredient_inst|
+      ingredient << ingredient_inst.name.capitalize 
+    end
+    ingredient = ingredient.join(", ")
+    puts "Ingredients: #{ingredient}"
     return recipe
   end
 end
@@ -169,6 +175,39 @@ def filter_by
 end
 
 # binding.pry
+def find_recipe_by_ingredient
+  print("What ingredients do you have? (Separate by comma)")
+  user_food = gets.chomp
+
+  ingredient_ids = user_food.split(",").collect do |ingredient|
+      Ingredient.find_or_create_by(name: ingredient).id
+  end
+  # binding.pry
+  meal_arr = Meal.all.select do |meal|
+    ingredient_ids.include?(meal.ingredient_id)
+  end
+  # binding.pry
+  hash = {}
+  meal_arr.each do |meal|
+    if hash.keys.include?(meal.recipe_id)
+      hash[meal.recipe_id] += 1
+    else
+      hash[meal.recipe_id] = 1
+    end
+  end
+  # binding.pry
+  arr = []
+  hash.each do |recipe_id, ingredient_count|
+    total_ingredients = Recipe.find(recipe_id).ingredients.size.to_f
+    if ingredient_count / total_ingredients >= 0.50
+      # binding.pry
+      arr << Recipe.find(recipe_id).name
+      # binding.pry
+    end
+  end
+  # binding.pry
+  return arr
+end
 
 def runner
   introduction
@@ -182,6 +221,7 @@ def runner
       "Update Recipe",
       "Filter Recipes by Rating or Difficulty",
       "Update Ingredient Price",
+      "Find Recipe by What's in Your Fridge",
       "Delete Recipe",
       "Exit App"
     ]
@@ -191,6 +231,8 @@ def runner
       puts add_recipe
     when "Find Recipe"
       find_recipe
+    when "Find Recipe by What's in Your Fridge"
+      puts find_recipe_by_ingredient
     when "Update Recipe"
       puts update_recipe
     when "Filter Recipes by Rating or Difficulty"
