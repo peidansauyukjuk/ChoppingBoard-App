@@ -6,7 +6,8 @@ class CreateRecipes < ActiveRecord::Migration[5.0]
       t.string :cuisine
       t.integer :rating
       t.string :difficulty
-      t.text :instructions
+      t.text :description
+      t.timestamps
     end
   end
 end

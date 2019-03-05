@@ -2,21 +2,21 @@ Recipe.delete_all
 Ingredient.delete_all
 Meal.delete_all
 
-recipe1 = Recipe.create(name: Faker::Food.dish, cuisine: Faker::Nation.nationality, rating: rand(1..5), difficulty: "easy", instructions: Faker::Food.description)
+recipe1 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "easy", description: Faker::Food.description)
 
-recipe2 = Recipe.create(name: Faker::Food.dish, cuisine: Faker::Nation.nationality, rating: rand(1..5), difficulty: "easy", instructions: Faker::Food.description)
+recipe2 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "easy", description: Faker::Food.description)
 
-recipe3 = Recipe.create(name: Faker::Food.dish, cuisine: Faker::Nation.nationality, rating: rand(1..5), difficulty: "easy", instructions: Faker::Food.description)
+recipe3 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "easy", description: Faker::Food.description)
 
-recipe4 = Recipe.create(name: Faker::Food.dish, cuisine: Faker::Nation.nationality, rating: rand(1..5), difficulty: "easy", instructions: Faker::Food.description)
+recipe4 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "medium", description: Faker::Food.description)
 
-recipe5 = Recipe.create(name: Faker::Food.dish, cuisine: Faker::Nation.nationality, rating: rand(1..5), difficulty: "easy", instructions: Faker::Food.description)
+recipe5 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "hard", description: Faker::Food.description)
 
-ingredient1 = Ingredient.create(name: Faker::Food.ingredient, price: rand(0.1..25.2))
-ingredient2 = Ingredient.create(name: Faker::Food.ingredient, price: rand(0.1..25.2))
-ingredient3 = Ingredient.create(name: Faker::Food.ingredient, price: rand(0.1..25.2))
-ingredient4 = Ingredient.create(name: Faker::Food.ingredient, price: rand(0.1..25.2))
-ingredient5 = Ingredient.create(name: Faker::Food.ingredient, price: rand(0.1..25.2))
+ingredient1 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient2 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient3 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient4 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient5 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
 
 meal1 = Meal.create(recipe_id: 1, ingredient_id: 1)
 meal2 = Meal.create(recipe_id: 1, ingredient_id: 2)
