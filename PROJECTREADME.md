@@ -8,6 +8,7 @@ List of all features:
 2. Find Recipe: This feature will help the user to find a recipe by all or part of title.
 3. Update Recipe: This feature allows the user to update all the attributes (except ingredients) of a recipe.
 4. Filter Recipes by Rating or Difficulty: This feature allows users to select filter settings to find more specific recipes.
+5. Find Recipe by What's in Your Fridge: This allows the user to enter a list of ingredients and receive all the recipes that they have at least half of the ingredients for. 
 5. Update Ingredient Price: This feature allows users to add or change the price of an ingredient.
 6. Delete Recipe: This feature allows users to delete a specific recipe from their cookbook.
 7. Exit App: This feature allows users to exit out of the cookbook.
