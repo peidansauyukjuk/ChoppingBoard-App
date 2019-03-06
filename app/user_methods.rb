@@ -114,9 +114,11 @@ def delete_recipe
   # find_recipe
   # Prompt user to confirm deletion
   recipe = find_recipe
+  recipe_idd = recipe.id
   puts "Are you sure you would like to delete this recipe? Enter Y or N"
   answer = gets.chomp.upcase
   if answer == "Y"
+    Measurement.destroy_all(recipe_id: recipe_idd)
     recipe.destroy
     return "Recipe deleted from the cookbook."
   elsif answer == "N"
