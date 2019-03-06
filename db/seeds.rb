@@ -1,6 +1,6 @@
 Recipe.delete_all
 Ingredient.delete_all
-Meal.delete_all
+Measurement.delete_all
 
 recipe1 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "easy", description: Faker::Food.description)
 
@@ -12,21 +12,24 @@ recipe4 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.
 
 recipe5 = Recipe.create(name: Faker::Food.dish.downcase, cuisine: Faker::Nation.nationality.downcase, rating: rand(1..5), difficulty: "hard", description: Faker::Food.description)
 
-ingredient1 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
-ingredient2 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
-ingredient3 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
-ingredient4 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
-ingredient5 = Ingredient.create(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient1 = Ingredient.find_or_create_by(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient2 = Ingredient.find_or_create_by(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient3 = Ingredient.find_or_create_by(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient4 = Ingredient.find_or_create_by(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
+ingredient5 = Ingredient.find_or_create_by(name: Faker::Food.ingredient.downcase, price: rand(0.1..25.2))
 
-meal1 = Meal.create(recipe_id: 1, ingredient_id: 1)
-meal2 = Meal.create(recipe_id: 1, ingredient_id: 2)
-meal3 = Meal.create(recipe_id: 1, ingredient_id: 3)
-meal4 = Meal.create(recipe_id: 2, ingredient_id: 1)
-meal5 = Meal.create(recipe_id: 2, ingredient_id: 4)
-meal6 = Meal.create(recipe_id: 2, ingredient_id: 5)
-meal7 = Meal.create(recipe_id: 3, ingredient_id: 2)
-meal8 = Meal.create(recipe_id: 3, ingredient_id: 3)
-meal9 = Meal.create(recipe_id: 3, ingredient_id: 4)
-meal10 = Meal.create(recipe_id: 4, ingredient_id: 5)
-meal11 = Meal.create(recipe_id: 4, ingredient_id: 2)
-meal12 = Meal.create(recipe_id: 4, ingredient_id: 1)
+measurement1 = Measurement.create(recipe_id: recipe1.id, ingredient_id: ingredient1.id)
+measurement2 = Measurement.create(recipe_id: recipe1.id, ingredient_id: ingredient2.id)
+measurement3 = Measurement.create(recipe_id: recipe1.id, ingredient_id: ingredient3.id)
+measurement4 = Measurement.create(recipe_id: recipe2.id, ingredient_id: ingredient3.id)
+measurement5 = Measurement.create(recipe_id: recipe2.id, ingredient_id: ingredient4.id)
+measurement6 = Measurement.create(recipe_id: recipe2.id, ingredient_id: ingredient5.id)
+measurement7 = Measurement.create(recipe_id: recipe3.id, ingredient_id: ingredient2.id)
+measurement8 = Measurement.create(recipe_id: recipe3.id, ingredient_id: ingredient1.id)
+measurement9 = Measurement.create(recipe_id: recipe3.id, ingredient_id: ingredient5.id)
+measurement10 = Measurement.create(recipe_id: recipe4.id, ingredient_id: ingredient1.id)
+measurement11 = Measurement.create(recipe_id: recipe4.id, ingredient_id: ingredient2.id)
+measurement12 = Measurement.create(recipe_id: recipe4.id, ingredient_id: ingredient3.id)
+measurement10 = Measurement.create(recipe_id: recipe5.id, ingredient_id: ingredient4.id)
+measurement11 = Measurement.create(recipe_id: recipe5.id, ingredient_id: ingredient5.id)
+measurement12 = Measurement.create(recipe_id: recipe5.id, ingredient_id: ingredient1.id)

@@ -1,25 +1,14 @@
 require 'pry'
 def introduction
-  puts "Welcome to the Cookbook!"
+  puts "Welcome to Chopping Board!"
   puts ""
   puts "This app will allow you to enter recipes, edit and find them for later use."
   puts "We hope you enjoy our app!"
   puts ""
 end
-#
-# def display_choices
-#   puts "Select one of the following:"
-#   puts "1. Add Recipe"
-#   puts "2. Find Recipe"
-#   puts "3. Update Recipe"
-#   puts "4. Update Ingredient Price"
-#   puts "5. Delete Recipe"
-#   puts "0. Exit App"
-#   puts ""
-# end
+
 
 def add_recipe
-  #Prompt user to enter recipe title
   puts "What is the title of your recipe?"
   recipe_name = gets.chomp
   if Recipe.find_by(name:recipe_name)
@@ -35,14 +24,18 @@ def add_recipe
     description = gets.chomp
     puts "Enter all the ingredients, separated by comma"
     ingredients = gets.chomp
-    ingredients = ingredients.scan(/\w+/)
-    ingredients.each do |ingredient|
+    list_of_ingredients = ingredients.split(",")
+    stripped_ingredients = list_of_ingredients.collect do |word|
+      word.strip
+    end
+    stripped_ingredients.each do |ingredient|
       Ingredient.find_or_create_by(name:ingredient)
     end
     recipe = Recipe.create(name:recipe_name, cuisine:cuisine, rating:rating.to_i, difficulty:difficulty, description:description)
-    ingredients.each do |ingredient|
-      Meal.create(recipe_id: recipe.id, ingredient_id: Ingredient.find_by(name:ingredient).id)
+    stripped_ingredients.each do |ingredient|
+      Measurement.create(recipe_id: recipe.id, ingredient_id: Ingredient.find_by(name:ingredient).id)
     end
+    binding.pry
     return "#{recipe_name} added to the cookbook!".capitalize
   end
 end
@@ -59,16 +52,9 @@ def find_recipe
     puts "Sorry! That recipe is not in the cookbook."
     puts ""
   else
-    # i = 1
     recipe_array = recipes.collect{|recipe| recipe.name}
     prompt = TTY::Prompt.new
     recipe_selection = prompt.select("Which recipe would you like to see?", recipe_array)
-    # recipes.each do |recipe|
-    #   puts "#{i}. #{recipe.name}"
-    #   i += 1
-    # end
-    # puts "Which recipe would you like to see (Enter a number):"
-    # num = gets.chomp.to_i
     recipe = Recipe.find_by(name: recipe_selection)
     puts "Name: #{recipe.name.capitalize}"
     puts "Cuisine: #{recipe.cuisine.capitalize}"
@@ -77,7 +63,7 @@ def find_recipe
     puts "Description: #{recipe.description.capitalize}"
     ingredient = []
     recipe.ingredients.each do |ingredient_inst|
-      ingredient << ingredient_inst.name.capitalize 
+      ingredient << ingredient_inst.name.capitalize
     end
     ingredient = ingredient.join(", ")
     puts "Ingredients: #{ingredient}"
@@ -86,11 +72,6 @@ def find_recipe
 end
 
 def update_recipe
-  # find_recipe <-- this is the recipe instance
-  # Prompt user to select from attributes to update
-  # Give a list of attributes to update
-  # If-else statements for attribute chosen.
-  # puts "Recipe updated!"
   recipe = find_recipe
   puts "What would you like to update? (Enter a number)"
   puts "1. Title\n2. Cusine\n3. Rating\n4. Difficulty\n5. Description"
@@ -124,10 +105,6 @@ def update_recipe
 end
 
 def add_price_to_ingredient #For ingredient
-  # Prompt user to enter ingredient name
-  # If ingredient exists, edit price
-  # Otherwise Ingredient.create and also edit price.
-  # "Ingredient updated!"
   puts "What ingredient would you like to add a price for?"
   ingredient_name = gets.chomp
   ingredient = Ingredient.find_or_create_by(name:ingredient_name)
@@ -177,22 +154,22 @@ end
 # binding.pry
 def find_recipe_by_ingredient
   print("What ingredients do you have? (Separate by comma)")
-  user_food = gets.chomp
-
-  ingredient_ids = user_food.split(",").collect do |ingredient|
+  user_food = gets.chomp.split(",").collect do |word|
+    word.strip
+  end
+  ingredient_ids = user_food.collect do |ingredient|
       Ingredient.find_or_create_by(name: ingredient).id
   end
-  # binding.pry
-  meal_arr = Meal.all.select do |meal|
-    ingredient_ids.include?(meal.ingredient_id)
+  measurement_arr = Measurement.all.select do |measurement|
+    ingredient_ids.include?(measurement.ingredient_id)
   end
   # binding.pry
   hash = {}
-  meal_arr.each do |meal|
-    if hash.keys.include?(meal.recipe_id)
-      hash[meal.recipe_id] += 1
+  measurement_arr.each do |measurement|
+    if hash.keys.include?(measurement.recipe_id)
+      hash[measurement.recipe_id] += 1
     else
-      hash[meal.recipe_id] = 1
+      hash[measurement.recipe_id] = 1
     end
   end
   # binding.pry
@@ -206,7 +183,22 @@ def find_recipe_by_ingredient
     end
   end
   # binding.pry
-  return arr
+  if arr.empty?
+    return "Sorry, you need more ingredients."
+  else
+    return arr.map do |food|
+      puts food.capitalize
+      puts "---"
+    end
+  end
+end
+
+def show_all_recipes
+  i = 1
+  Recipe.all.each do |recipe|
+    puts "#{i}. #{recipe.name}"
+    i += 1
+  end
 end
 
 def runner
@@ -218,6 +210,7 @@ def runner
     choices = [
       "Add Recipe",
       "Find Recipe",
+      "See All Recipes",
       "Update Recipe",
       "Filter Recipes by Rating or Difficulty",
       "Update Ingredient Price",
@@ -237,6 +230,8 @@ def runner
       puts update_recipe
     when "Filter Recipes by Rating or Difficulty"
       filter_by
+    when "See All Recipes"
+      show_all_recipes
     when "Update Ingredient Price"
       puts add_price_to_ingredient
     when "Delete Recipe"
