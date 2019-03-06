@@ -9,6 +9,7 @@ end
 
 
 def add_recipe
+  prompt = TTY::Prompt.new
   puts "What is the title of your recipe?"
   recipe_name = gets.chomp
   if Recipe.find_by(name:recipe_name)
@@ -17,9 +18,8 @@ def add_recipe
     puts "What type of cuisine is this recipe?"
     cuisine = gets.chomp
     puts "Rate this recipe from 1-5."
-    rating = gets.chomp
-    puts "Enter easy, medium, or hard."
-    difficulty = gets.chomp
+    rating = prompt.select("Rate this recipe", %w(1 2 3 4 5))
+    difficulty = prompt.select("Select difficulty", %w(Easy Medium, Hard)).downcase
     puts "Enter a simple description of the recipe."
     description = gets.chomp
     puts "Enter all the ingredients, separated by comma"
@@ -68,27 +68,25 @@ end
 
 def update_recipe
   recipe = find_recipe
-  puts "What would you like to update? (Enter a number)"
-  puts "1. Title\n2. Cusine\n3. Rating\n4. Difficulty\n5. Description"
-  print ">"
-  num = gets.chomp.to_i
-  if num == 1
+  prompt = TTY::Prompt.new
+  answer = prompt.select("What would you like to update?", %w(Title Cuisine Rating Difficulty Description))
+  if answer == "Title"
     puts "What would you like to change the title to?"
     new_title = gets.chomp
     recipe.name = new_title.downcase
-  elsif num == 2
+  elsif answer == "Cuisine"
     puts "What would like to change the cuisine to?"
     new_cuisine = gets.chomp
     recipe.cuisine = new_cuisine.downcase
-  elsif num == 3
+  elsif answer == "Rating"
     puts "Enter a new rating from 1 to 5:"
     new_rating = gets.chomp
     recipe.rating = new_rating.to_i
-  elsif num == 4
+  elsif answer == "Difficulty"
     puts "Change difficulty to easy, medium, or hard:"
     new_difficulty = gets.chomp
     recipe.difficulty = new_difficulty.downcase
-  elsif num == 5
+  elsif answer == "Description"
     puts "Change description:"
     new_description = gets.chomp
     recipe.description = new_description.downcase
@@ -111,8 +109,7 @@ def add_price_to_ingredient #For ingredient
 end
 
 def delete_recipe
-  # find_recipe
-  # Prompt user to confirm deletion
+  
   recipe = find_recipe
   puts "Are you sure you would like to delete this recipe? Enter Y or N"
   answer = gets.chomp.upcase
@@ -148,7 +145,7 @@ def filter_by
 end
 
 def find_recipe_by_ingredient
-  print("What ingredients do you have? (Separate by comma)")
+  print("What ingredients do you have? Separate by comma: ")
   user_food = gets.chomp.split(",").collect do |word|
     word.strip
   end
@@ -204,7 +201,7 @@ def runner
       "Update Recipe",
       "Filter Recipes by Rating or Difficulty",
       "Update Ingredient Price",
-      "Find Recipe by What's in Your Fridge",
+      "What's in Your Fridge?",
       "Delete Recipe",
       "Exit App"
     ]
@@ -214,7 +211,7 @@ def runner
       puts add_recipe
     when "Find Recipe"
       find_recipe
-    when "Find Recipe by What's in Your Fridge"
+    when "What's in Your Fridge?"
       puts find_recipe_by_ingredient
     when "Update Recipe"
       puts update_recipe
