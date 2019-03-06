@@ -35,16 +35,11 @@ def add_recipe
     stripped_ingredients.each do |ingredient|
       Measurement.create(recipe_id: recipe.id, ingredient_id: Ingredient.find_by(name:ingredient).id)
     end
-    binding.pry
     return "#{recipe_name} added to the cookbook!".capitalize
   end
 end
 
 def find_recipe
-  #Prompt to enter recipe title
-  #Display top 5 recipe titles if no exact matches are found.
-  #Let user choose from those 5 and puts attributes
-  #Return recipe instance
   print "Enter recipe title: "
   recipe_name = gets.chomp
   recipes = Recipe.where("name LIKE ?", "%#{recipe_name}%").limit(5)
@@ -151,7 +146,6 @@ def filter_by
   end
 end
 
-# binding.pry
 def find_recipe_by_ingredient
   print("What ingredients do you have? (Separate by comma)")
   user_food = gets.chomp.split(",").collect do |word|
@@ -163,7 +157,6 @@ def find_recipe_by_ingredient
   measurement_arr = Measurement.all.select do |measurement|
     ingredient_ids.include?(measurement.ingredient_id)
   end
-  # binding.pry
   hash = {}
   measurement_arr.each do |measurement|
     if hash.keys.include?(measurement.recipe_id)
@@ -172,17 +165,13 @@ def find_recipe_by_ingredient
       hash[measurement.recipe_id] = 1
     end
   end
-  # binding.pry
   arr = []
   hash.each do |recipe_id, ingredient_count|
     total_ingredients = Recipe.find(recipe_id).ingredients.size.to_f
     if ingredient_count / total_ingredients >= 0.50
-      # binding.pry
       arr << Recipe.find(recipe_id).name
-      # binding.pry
     end
   end
-  # binding.pry
   if arr.empty?
     return "Sorry, you need more ingredients."
   else
