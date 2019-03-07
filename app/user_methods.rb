@@ -11,19 +11,18 @@ end
 def add_recipe
   prompt = TTY::Prompt.new
   puts "What is the title of your recipe?"
-  recipe_name = gets.chomp
+  recipe_name = gets.chomp.downcase
   if Recipe.find_by(name:recipe_name)
     return "Recipe already in the cookbook!"
   else
     puts "What type of cuisine is this recipe?"
-    cuisine = gets.chomp
-    puts "Rate this recipe from 1-5."
+    cuisine = gets.chomp.downcase
     rating = prompt.select("Rate this recipe", %w(1 2 3 4 5))
-    difficulty = prompt.select("Select difficulty", %w(Easy Medium, Hard)).downcase
+    difficulty = prompt.select("Select difficulty", %w(Easy Medium Hard)).downcase
     puts "Enter a simple description of the recipe."
-    description = gets.chomp
+    description = gets.chomp.downcase
     puts "Enter all the ingredients, separated by comma"
-    ingredients = gets.chomp
+    ingredients = gets.chomp.downcase
     list_of_ingredients = ingredients.split(",")
     stripped_ingredients = list_of_ingredients.collect do |word|
       word.strip
@@ -41,7 +40,7 @@ end
 
 def find_recipe
   print "Enter recipe title: "
-  recipe_name = gets.chomp
+  recipe_name = gets.chomp.downcase
   recipes = Recipe.where("name LIKE ?", "%#{recipe_name}%").limit(5)
   if recipes == []
     puts "Sorry! That recipe is not in the cookbook."
@@ -79,12 +78,10 @@ def update_recipe
     new_cuisine = gets.chomp
     recipe.cuisine = new_cuisine.downcase
   elsif answer == "Rating"
-    puts "Enter a new rating from 1 to 5:"
-    new_rating = gets.chomp
+    new_rating = prompt.select("Rate this recipe", %w(1 2 3 4 5))
     recipe.rating = new_rating.to_i
   elsif answer == "Difficulty"
-    puts "Change difficulty to easy, medium, or hard:"
-    new_difficulty = gets.chomp
+    new_difficulty = prompt.select("Select difficulty", %w(Easy Medium Hard))
     recipe.difficulty = new_difficulty.downcase
   elsif answer == "Description"
     puts "Change description:"
@@ -99,20 +96,20 @@ end
 
 def add_price_to_ingredient #For ingredient
   puts "What ingredient would you like to add a price for?"
-  ingredient_name = gets.chomp
+  ingredient_name = gets.chomp.downcase
   ingredient = Ingredient.find_or_create_by(name:ingredient_name)
   puts "How much does this cost?"
-  cost = gets.chomp.to_f
+  cost = gets.chomp.downcase.to_f
   ingredient.price = cost
   ingredient.save
   "Price updated!"
 end
 
 def delete_recipe
-  
+
   recipe = find_recipe
   puts "Are you sure you would like to delete this recipe? Enter Y or N"
-  answer = gets.chomp.upcase
+  answer = gets.chomp.downcase.upcase
   if answer == "Y"
     Measurement.where(recipe_id: recipe.id).destroy_all
     recipe.destroy
@@ -147,7 +144,7 @@ end
 def find_recipe_by_ingredient
   print("What ingredients do you have? Separate by comma: ")
   user_food = gets.chomp.split(",").collect do |word|
-    word.strip
+    word.strip.downcase
   end
   ingredient_ids = user_food.collect do |ingredient|
       Ingredient.find_or_create_by(name: ingredient).id
