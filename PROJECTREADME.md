@@ -1,9 +1,12 @@
 # Chopping Board: The Cookbook App
 ---
-
 ## DESCRIPTION
 ---
 This app allows users to add recipes into a cookbook, edit those recipes, and find them. There are a variety of other features users can utilize to filter through their recipes!
+
+## Check out our video and blog!
+[Simon's Blog](https://medium.com/@smei8800/project-choppingboard-e7e601cfbae7)
+[Sadie's Video](https://www.youtube.com/watch?v=3NhwEDAt4r4&amp;feature=youtu.be)
 
 ### Features
 * **Add Recipe:**
